@@ -24,9 +24,11 @@ def chat():
     return jsonify({
         "version": "2.0",
         "template": {
-            "outputs": [{"simpleText": {"text": ai_reply}}]
+            "outputs": [
+                {"simpleText": {"text": ai_reply}}
+            ]
         }
     })
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    app.run(host="0.0.0.0", port=8080)
