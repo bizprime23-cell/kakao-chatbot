@@ -29,12 +29,3 @@ def chat():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
-```
-
----
-
-**4단계** — `requirements.txt` 도 클릭 → ✏️ 클릭 → 아래로 변경:
-```
-flask
-google-genai
-gunicorn
