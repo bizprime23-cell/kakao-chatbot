@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify
-from google import genai
+from groq import Groq
 import os
 
 app = Flask(__name__)
-client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
+client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
 
 @app.route("/", methods=["GET"])
 def health():
@@ -13,11 +13,14 @@ def health():
 def chat():
     data = request.get_json(force=True)
     user_message = data["userRequest"]["utterance"]
-    response = client.models.generate_content(
-        model="gemini-2.0-flash",
-        contents=user_message
+    response = client.chat.completions.create(
+        model="llama-3.3-70b-versatile",
+        messages=[
+            {"role": "system", "content": "당신은 친절한 AI 비서입니다. 한국어로 답변해주세요."},
+            {"role": "user", "content": user_message}
+        ]
     )
-    ai_reply = response.text
+    ai_reply = response.choices[0].message.content
     return jsonify({
         "version": "2.0",
         "template": {
@@ -29,3 +32,4 @@ def chat():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080)
+    
